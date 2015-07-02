@@ -1,4 +1,4 @@
-using es6 in both server side and browser side.
+using es6 in either server side or browser side.
 contain ReactJS example.
 
 
