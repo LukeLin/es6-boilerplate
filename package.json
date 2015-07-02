@@ -1,0 +1,29 @@
+{
+  "name": "blank-project",
+  "version": "1.0.0",
+  "description": "Boilerplate project that can be grown into a bigger project.",
+  "keywords": [],
+  "main": "index.js",
+  "scripts": {},
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^3.5.0",
+    "react": "^0.13.1"
+  },
+  "devDependencies": {
+    "gulp": "*",
+    "gulp-sourcemaps": "*",
+    "browserify": "*",
+    "babel-runtime": "*",
+    "del": "*",
+    "gulp-livereload": "*",
+    "vinyl-source-stream": "*",
+    "gulp-util": "*",
+    "through2": "*",
+    "vinyl-sourcemaps-apply": "*",
+    "object-assign": "*",
+    "replace-ext": "*",
+    "babel-core": "*"
+  }
+}
