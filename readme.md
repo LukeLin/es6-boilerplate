@@ -1,5 +1,5 @@
 using es6 in either server side or browser side.
-contain ReactJS example.
+Contain a ReactJS example.
 
 
 1.npm install
