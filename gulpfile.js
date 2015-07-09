@@ -14,6 +14,8 @@ var objectAssign = require('object-assign');
 var replaceExt = require('replace-ext');
 var babelCore = require('babel-core');
 var path    = require("path");
+var uglify = require('gulp-uglify');
+var buffer = require('vinyl-buffer');
 
 // gulp-babel
 var babel = function (opts) {
@@ -115,6 +117,8 @@ gulp.task('libs', function () {
 
     stream.bundle()
         .pipe(source('libs.js'))
+        .pipe(buffer())
+        .pipe(uglify())
         .pipe(gulp.dest('./dist/public'));
 
     return stream;
@@ -126,7 +130,7 @@ gulp.task('client-scripts', function () {
         transform: [babelify({
             optional: ["runtime"]
         })],
-        debug: false,
+        debug: true,
         extensions: ['.jsx'],
         fullPaths: false
     });

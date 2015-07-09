@@ -24,6 +24,8 @@
     "vinyl-sourcemaps-apply": "*",
     "object-assign": "*",
     "replace-ext": "*",
-    "babel-core": "*"
+    "babel-core": "*",
+    "gulp-uglify": "*",
+    "vinyl-buffer": "*"
   }
 }
