@@ -99,3 +99,83 @@ const printLines = coroutine(function* () {
 });
 
 readFile(__dirname + '/../../server/app.es6', splitLines(numberLines(printLines())));
+
+
+import 'isomorphic-fetch';
+
+function getFile(url){
+    return fetch(url)
+        .then(request => request.text())
+}
+
+function co(genFunc){
+    let genObj = genFunc();
+    run();
+
+    function run(promiseResult){
+        let {value, done} = genObj.next(promiseResult);
+        if(!done) {
+            value
+                .then(result => run(result))
+                .catch(error => {
+                    genObj.throw(error);
+                });
+        }
+    }
+}
+
+co(function* (){
+    try {
+        let [croStr, bondStr] = yield Promise.all([
+            getFile('http://localhost:8000/app.js'),
+            getFile('http://localhost:8000/arrow-function.js')
+        ]);
+        console.log(croStr);
+        console.log(bondStr);
+    } catch(e){
+        console.log('Failure to read: ' + e);
+    }
+});
+
+
+function* take(n, iterable){
+    for(let x of iterable){
+        if(n <= 0) return;
+        --n;
+        yield x;
+    }
+}
+
+/**
+ function take(n, iterable) {
+    let iter = iterable[Symbol.iterator]();
+    return {
+        [Symbol.iterator]() {
+            return this;
+        },
+        next() {
+            if (n > 0) {
+                n--;
+                return iter.next();
+            } else {
+                maybeCloseIterator(iter);
+                return { done: true };
+            }
+        },
+        return() {
+            n = 0;
+            maybeCloseIterator(iter);
+        }
+    };
+}
+ function maybeCloseIterator(iterator) {
+    if (typeof iterator.return === 'function') {
+        iterator.return();
+    }
+}
+ */
+
+let arr = ['a', 'b', 'c', 'd'];
+for(let x of take(2, arr)){
+    console.log(x);
+}
