@@ -166,4 +166,4 @@ gulp.task('watch', function(){
     gulp.watch(['./public/*.es6',  './public/jsx/*.jsx', './server/*.es6']).on('change', livereload.changed);
 });
 
-gulp.task('default', ['clean', 'libs', 'client-scripts', 'server-scripts', 'watch']);
+gulp.task('default', [/*'clean', */'libs', 'client-scripts', 'server-scripts', 'watch']);
