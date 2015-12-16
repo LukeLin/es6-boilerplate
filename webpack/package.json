@@ -1,0 +1,38 @@
+{
+    "name": "h5-game-portal",
+    "version": "1.0.0",
+    "description": "h5 GamePortal",
+    "main": "gulpfile.js",
+    "scripts": {
+        "build": "gulp",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "devicalin",
+    "license": "ISC",
+    "dependencies": {
+        "babel-polyfill": "^6.3.14",
+        "babel-runtime": "^6.3.19",
+        "blazy": "^1.5.2",
+        "fastclick": "^1.0.6",
+        "history": "^1.16.0"
+    },
+    "devDependencies": {
+        "babel-core": "^6.3.15",
+        "babel-loader": "^6.2.0",
+        "babel-plugin-transform-runtime": "^6.3.13",
+        "babel-preset-es2015": "^6.3.13",
+        "babel-preset-react": "^6.3.13",
+        "babel-preset-stage-0": "^6.3.13",
+        "gulp": ">=3.9.0",
+        "gulp-minify-css": "^1.2.2",
+        "gulp-rename": "1.2.2",
+        "gulp-uglify": ">=1.2.0",
+        "json-loader": "^0.5.4",
+        "object-assign": "3.0.0",
+        "stringify": "3.1.0",
+        "through2": "2.0.0",
+        "vinyl-buffer": "1.0.0",
+        "vinyl-source-stream": "1.1.0",
+        "webpack": "^1.12.9"
+    }
+}
