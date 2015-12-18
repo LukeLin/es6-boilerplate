@@ -5,21 +5,15 @@
 var webpack = require('webpack');
 var path = require('path');
 
-var DEBUG = process.env.NODE_ENV === 'development';
-var TEST = process.env.NODE_ENV === 'test';
+var DEBUG = process.env.NODE_ENV.trim() === 'development';
+var TEST = process.env.NODE_ENV.trim() === 'test';
 
 var plugins = [
     new webpack.optimize.OccurenceOrderPlugin()
 ];
 if (DEBUG) {
     plugins.push(
-        new webpack.HotModuleReplacementPlugin()
-    );
-} else if (!TEST) {
-    plugins.push(
-        //new ExtractTextPlugin(cssBundle, {
-        //  allChunks: true
-        //}),
+        new webpack.HotModuleReplacementPlugin(),
         new webpack.optimize.CommonsChunkPlugin({
             name: "commons",
             // (the commons chunk name)
@@ -29,8 +23,19 @@ if (DEBUG) {
 
             // minChunks: 3,
             // (Modules must be shared between 3 entries)
+        })
+    );
+} else if (!TEST) {
+    plugins.push(
+        //new ExtractTextPlugin(cssBundle, {
+        //  allChunks: true
+        //}),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            },
+            sourceMap: false
         }),
-        new webpack.optimize.UglifyJsPlugin(),
         new webpack.optimize.DedupePlugin(),
         new webpack.DefinePlugin({
             'process.env': {
@@ -41,15 +46,20 @@ if (DEBUG) {
     );
 }
 
+var appEntry = [
+    'babel-polyfill',
+    './js/app.jsx'
+];
+if(DEBUG) {
+    appEntry.push('webpack-dev-server/client?http://0.0.0.0:8000',  'webpack/hot/dev-server');
+}
+
 module.exports = {
     entry: {
-        app: [
-            'babel-polyfill',
-            './js/app.jsx'
-        ],
+        app: appEntry,
         //commons: [
         //    'zepto', 'react', 'react-dom', 'react-router',
-        //    'modules/test',
+        //    'modules/h5portal', 'modules/reportModule', 'modules/softModule', 'modules/userModule', 'modules/utilities',
         //    'plugins/cookie', 'plugins/swiper', 'plugins/zepto.waypoints'
         //]
     },
@@ -57,7 +67,7 @@ module.exports = {
         path: './release/js/',
         filename: DEBUG ? "[name].js" : "[name]-[hash].js",
         chunkFilename: DEBUG ? "[name].js" : "[name]-[hash].js",
-        publicPath: 'cdnurl',
+        publicPath: 'http://res.imtt.qq.com///game_list/H5Portal/js/',
         pathinfo: false
     },
 
@@ -76,7 +86,7 @@ module.exports = {
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel',
                 query: {
-                    presets: ['react', 'es2015'],
+                    presets: ['react', 'es2015', 'stage-0'],
                     plugins: ['transform-runtime'],
                     cacheDirectory: true
                 }
@@ -137,5 +147,13 @@ module.exports = {
             'plugins': path.join(__dirname, './js/plugins'),
             'components': path.join(__dirname, './js/components')
         }
+    },
+
+    devServer: DEBUG && {
+        contentBase: './release/',
+        hot: true,
+        noInfo: false,
+        inline: true,
+        stats: {colors: true}
     }
 };
