@@ -8,7 +8,7 @@ var fs = require('fs');
 //var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
-var DEBUG = false;
+var DEBUG = true;
 var TEST = process.env.NODE_ENV.trim() === 'test';
 
 var plugins = [
