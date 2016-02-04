@@ -5,7 +5,7 @@
 var webpack = require('webpack');
 var path = require('path');
 var fs = require('fs');
-//var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 var DEBUG = false;
@@ -17,7 +17,10 @@ var plugins = [
     new ProgressBarPlugin({
         format: '  build [:bar] :percent (:elapsed seconds)',
         clear: false
-    })
+    }),
+    new ExtractTextPlugin(DEBUG ? './css/[name].css' : './css/[name]-[hash].css', {
+        allChunks: true
+    }),
 ];
 if (DEBUG) {
     plugins.push(
@@ -35,9 +38,6 @@ if (DEBUG) {
     );
 } else if (!TEST) {
     plugins.push(
-        //new ExtractTextPlugin('./css/[name]-[hash].css', {
-        //  allChunks: true
-        //}),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false
@@ -87,10 +87,10 @@ module.exports = {
         //]
     },
     output: {
-        path: './release/js/',
-        filename: DEBUG ? "[name].js" : "[name]-[hash].js",
-        chunkFilename: DEBUG ? "[name].js" : "[name]-[hash].js",
-        publicPath: 'http://res.imtt.qq.com///game_list/H5Portal/js/',
+        path: './release/',
+        filename: DEBUG ? "./js/[name].js" : "./js/[name]-[hash].js",
+        chunkFilename: DEBUG ? "./js/[name].js" : "./js/[name]-[hash].js",
+        publicPath: 'http://res.imtt.qq.com///game_list/H5Portal/',
         pathinfo: false
     },
 
@@ -121,23 +121,24 @@ module.exports = {
                 loaders: ['json-loader']
             },
 
-            //// Load styles
-            //{
-            //    test: /\.css$/,
-            //    loader: DEBUG
-            //        ? "style!css"
-            //        : ExtractTextPlugin.extract("style-loader", "css-loader")
-            //},
+            // Load styles
+            {
+                test: /\.css$/,
+                loader:
+                //DEBUG
+                //? "style!css" :
+                    ExtractTextPlugin.extract("style-loader", "css-loader")
+            },
 
             // Load images
-            //{ test: /\.jpg/, loader: "url-loader?limit=10000&mimetype=image/jpg" },
-            //{ test: /\.gif/, loader: "url-loader?limit=10000&mimetype=image/gif" },
-            //{ test: /\.png/, loader: "url-loader?limit=10000&mimetype=image/png" },
-            //{ test: /\.svg/, loader: "url-loader?limit=10000&mimetype=image/svg" },
+            { test: /\.jpg/, loader: "url-loader?limit=5000&mimetype=image/jpg&name=[path][name].[ext]" },
+            { test: /\.gif/, loader: "url-loader?limit=5000&mimetype=image/gif&name=[path][name].[ext]" },
+            { test: /\.png/, loader: "url-loader?limit=5000&mimetype=image/png&name=[path][name].[ext]" },
+            { test: /\.svg/, loader: "url-loader?limit=5000&mimetype=image/svg&name=[path][name].[ext]" },
 
             // Load fonts
-            //{ test: /\.woff$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
-            //{ test: /\.(ttf|eot|svg)$/, loader: "file-loader" }
+            { test: /\.woff$/, loader: "url-loader?limit=5000&minetype=application/font-woff&name=[path][name].[ext]" },
+            { test: /\.(ttf|eot|svg)$/, loader: "file-loader?name=[path][name].[ext]" }
         ],
         noParse: []
     },
